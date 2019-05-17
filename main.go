@@ -1,30 +1,32 @@
 package main
 
 import (
-	"os"
+	"time"
 )
 
 func main () {
-	n, err := os.OpenFile("/dev/null", os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
+	t := time.Now()
+	print("Start time: ", t.Hour(), ":", t.Minute(), ":", t.Second(), "\n")
+	for i := 0; i < 500000; i++ {
+		t = time.Now()
+		wasteRam(t)
 	}
-	defer n.Close()
-	for i := 0; i < 100000; i++ {
-		foo(n)
-	}
+	t = time.Now()
+	print("End time: ", t.Hour(), ":", t.Minute(), ":", t.Second(), "\n")
 }
 
-func foo(n *os.File) {
-	a := "1"
-	b := "2"
-	c := a + b
-	numBytes, err := n.WriteString(c)
-	if err != nil {
-		panic(err)
+func wasteRam(t time.Time) {
+	a := 1
+	b := 2
+	c := t.Nanosecond()
+	d := t.Nanosecond()
+	e := (a + c) + (b + d)
+	f := 0
+	if (e % 7) == 0 {
+		f++
 	}
-	if numBytes != 2 {
-		panic("Incorrect number of bytes written")
+	if f > 10000 {
+		println("f has reached 10k")
 	}
 }
 
